@@ -4,12 +4,10 @@ export default defineEventHandler(async (event) => {
     const { family } = event.context.params
 
     try {
-        const allFruits = await $fetch('https://www.fruityvice.com/api/fruit/all')
-        const filteredFruits = allFruits.filter((fruit: any) => fruit.family.toLowerCase() === family.toLowerCase())
-
+        const allFruits = await $fetch(`https://www.fruityvice.com/api/fruit/family/${family}`)
         return {
             family,
-            fruits: filteredFruits
+            fruits: allFruits
         }
     } catch (error) {
         event.res.statusCode = 500

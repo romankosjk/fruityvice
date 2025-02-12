@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { fetchFruits } from '~/api/fruits'
 
 export const useFruitStore = defineStore('fruit', {
     state: () => ({
@@ -25,8 +24,11 @@ export const useFruitStore = defineStore('fruit', {
             this.isLoading = true
             this.error = null
             try {
-                const data = await fetchFruits()
+                const config = useRuntimeConfig(); // Получаем глобальный конфиг
+                const apiBase = config.public.apiBase; // Сохраняем API-URL
+                const data = await $fetch(`${apiBase}/api/fruit/all`) // Используем глобальный API-URL
                 this.fruits = data
+
             } catch (err: any) {
                 this.error = err.message || 'Error fetching fruits'
             } finally {

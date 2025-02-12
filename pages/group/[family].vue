@@ -51,6 +51,9 @@ interface Fruit {
   }
 }
 
+const config = useRuntimeConfig(); // Получаем глобальный конфиг
+const apiBase = config.public.apiBase; // Сохраняем API-URL
+
 const route = useRoute()
 const family = route.params.family as string
 
@@ -91,8 +94,8 @@ const fetchFruitsByFamily = async () => {
   isLoading.value = true
   error.value = null
   try {
-    const data: any = await $fetch(`/api/fruit/family/${encodeURIComponent(family)}`)
-    fruits.value = data.fruits
+    const data: any = await $fetch(`${apiBase}/api/fruit/family/${encodeURIComponent(family)}`)
+    fruits.value = data
   } catch (err: any) {
     error.value = err.message || 'Errors loading'
   } finally {
